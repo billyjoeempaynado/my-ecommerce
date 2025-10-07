@@ -10,6 +10,7 @@ import categoryRoutes from "./routes/categories.js";  // Category routes
 import supplierRoutes from "./routes/suppliers.js"; // Supplier routes
 import { authenticate, authorizeRole } from "./middleware/auth.js"; // JWT auth middleware
 
+
 const app = express();
 const PORT = process.env.PORT || 8080;  // Use env PORT or default to 8080
 
@@ -49,9 +50,17 @@ app.get("/api/user", authenticate, (req, res) => {
 
 // ========================== START SERVER ==========================
 
+  // Test DB connection
+try {
+  await sequelize.authenticate();
+  console.log("✅ Database connected successfully!");
+} catch (error) {
+  console.error("❌ Database connection failed:", error);
+}
+
 // Sync database tables and start server
 // `alter: true` will update table structures without dropping tables
-sequelize.sync({ alter: true })
+sequelize.sync({ })
   .then(() => {
     app.listen(PORT, () => {
       console.log(`🚀 Server running on port ${PORT}`);
@@ -60,3 +69,4 @@ sequelize.sync({ alter: true })
   .catch((err) => {
     console.error("❌ Database sync failed:", err);
   });
+
