@@ -60,7 +60,7 @@ try {
 
 // Sync database tables and start server
 // `alter: true` will update table structures without dropping tables
-sequelize.sync({ })
+sequelize.sync()
   .then(() => {
     app.listen(PORT, () => {
       console.log(`🚀 Server running on port ${PORT}`);
