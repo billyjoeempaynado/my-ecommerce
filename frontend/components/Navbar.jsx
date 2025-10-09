@@ -37,7 +37,7 @@ export default function Navbar() {
         </Link>
     ) : (
         // ✅ Show Login if not logged in
-        <Link href="/login">
+        <Link href="">
         <p>Sign In</p>
         </Link>
     )}

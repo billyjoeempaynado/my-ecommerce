@@ -1,9 +1,11 @@
 // ========================== routes/items.js ==========================
 
 import express from "express";
-import { Item, Category, Supplier } from "../models/index.js";   // Import models (associations handled in index.js)
+import { Item, Category, Supplier } from "../models/index.js";
 import { authenticate, authorizeRole } from "../middleware/auth.js";
-import next from "next";
+import sequelize from "../config/db.js";
+import { QueryTypes } from "sequelize"; // ✅ ADD THIS
+
 
 const router = express.Router();
 
@@ -81,6 +83,49 @@ router.delete("/:id", authenticate, authorizeRole("admin"), async (req, res) => 
     res.status(500).json({ message: "Internal server error" });
   }
 });
+
+// ================== EDIT Item ==================
+// EDIT /api/items/:id
+// Only admins should be allowed to edit items
+router.put("/:id", authenticate, authorizeRole("admin"), async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, code, price, stock, category_id, supplier_id } = req.body;
+
+    // 🟩 Find product
+    const product = await Item.findByPk(id);
+    if (!product) return res.status(404).json({ error: "Product not found" });
+
+    // 🟩 Update record
+    await product.update({ name, code, price, stock, category_id, supplier_id });
+
+    // 🟩 Re-fetch updated product with associations
+    const updatedProduct = await Item.findByPk(id, {
+      include: [
+        {
+          model: Category,
+          as: "category",
+          attributes: ["id", "name"]
+        },
+        {
+          model: Supplier,
+          as: "supplier",
+          attributes: ["id", "name"]
+        }
+      ]
+    });
+
+    res.json(updatedProduct); // ✅ send structured data (category + supplier)
+  } catch (err) {
+    console.error("❌ Error updating product details:", err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
+
+
+
 
 
 export default router;

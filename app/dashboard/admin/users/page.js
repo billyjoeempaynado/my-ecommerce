@@ -1,8 +1,9 @@
 "use client"; // this is now a Client Component
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { PencilIcon, TrashIcon, EyeIcon } from "@heroicons/react/24/solid";
 import GlobalViewModal from "../../../../frontend/components/admin/GlobalViewModal";
+import { getUsers } from "../../../../frontend/utils/api/users";
 import GlobalEditModal from "../../../../frontend/components/admin/GlobalEditModal";
 import GlobalDeleteModal from "../../../../frontend/components/admin/GlobalDeleteModal";
 
@@ -11,15 +12,37 @@ export default function UsersPage() {
   const [viewOpen, setViewOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [users, setUsers] = useState([]);
+  const [error, setError] = useState(null); 
 
-  const users = [
-    { id: "1", name: "Alice", email: "alice@example.com", role: "Admin", date: "09-10-2025" },
-    { id: "2", name: "Bob", email: "bob@example.com", role: "User", date: "09-11-2025" },
-  ];
+      // ✅ Fetch users from backend
+      useEffect(() => {
+        const loadUsers = async () => {
+          try {
+            setLoading(true);
+            const data = await getUsers();
+            setUsers(data);
+          } catch (err) {
+            console.error("❌ Error fetching users:", err.message);
+            setError(err.message);
+          } finally {
+            setLoading(false);
+          }
+        };
+    
+        loadUsers();
+      }, []);
+
+
 
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Users</h1>
+
+         {/* Loading/Error state */}
+      {loading && <p>Loading supplier...</p>}
+      {error && <p className="text-red-500">Error: {error}</p>}
 
       <table className="w-full border-collapse border-gray-200 bg-white">
         <thead>
@@ -32,26 +55,23 @@ export default function UsersPage() {
           </tr>
         </thead>
 
-        <tbody>
+       <tbody>
           {users.map((user) => (
             <tr key={user.id} className="border-t">
-              <td className="border px-4 py-2">{user.name}</td>
+              <td className="border px-4 py-2">{user.username}</td>
               <td className="border px-4 py-2">{user.email}</td>
               <td className="border px-4 py-2">{user.role}</td>
-              <td className="border px-4 py-2">{user.date}</td>
+              <td className="border px-4 py-2">
+                {new Date(user.created_at).toLocaleDateString()}
+              </td>
               <td className="border px-4 py-2">
                 <div className="flex justify-evenly">
-                  {/* View */}
                   <button onClick={() => { setSelectedItem(user); setViewOpen(true); }}>
                     <EyeIcon className="h-5 w-5 text-blue-500" />
                   </button>
-
-                  {/* Edit */}
                   <button onClick={() => { setSelectedItem(user); setEditOpen(true); }}>
                     <PencilIcon className="h-5 w-5 text-green-500" />
                   </button>
-
-                  {/* Delete */}
                   <button onClick={() => { setSelectedItem(user); setDeleteOpen(true); }}>
                     <TrashIcon className="h-5 w-5 text-red-500" />
                   </button>
@@ -60,6 +80,7 @@ export default function UsersPage() {
             </tr>
           ))}
         </tbody>
+
       </table>
 
       {/* Modals */}

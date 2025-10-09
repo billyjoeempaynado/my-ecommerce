@@ -15,6 +15,10 @@ const Supplier = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false
     },
+    person: {                     // Supplier name
+      type: DataTypes.STRING,
+      allowNull: false
+    },
     email: {                    // Supplier email
       type: DataTypes.STRING,
       allowNull: false,

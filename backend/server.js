@@ -8,6 +8,7 @@ import authRoutes from "./routes/auth.js";      // Auth routes (login/register)
 import itemRoutes from "./routes/items.js";     // Item routes (CRUD)
 import categoryRoutes from "./routes/categories.js";  // Category routes
 import supplierRoutes from "./routes/suppliers.js"; // Supplier routes
+import userRoutes from "./routes/users.js"; // Supplier routes
 import { authenticate, authorizeRole } from "./middleware/auth.js"; // JWT auth middleware
 
 
@@ -23,6 +24,9 @@ app.use(express.json());      // Parse incoming JSON requests
 app.use("/api/auth", authRoutes);
 
 // Item endpoints (CRUD operations on items)
+app.use("/api/users", userRoutes);
+
+// Item endpoints (CRUD operations on items)
 app.use("/api/items", itemRoutes);
 
 // Category endpoints
@@ -31,12 +35,6 @@ app.use("/api/categories", categoryRoutes);
 // Suppliers endpoints
 app.use("/api/suppliers", supplierRoutes);
 
-// ========================== TEST ROUTES ==========================
-
-// Simple test route to verify items route works
-app.get("/api/items/test", (req, res) => {
-  res.json({ message: "✅ Items route works!" });
-});
 
 // Admin-protected route example
 app.get("/api/admin", authenticate, authorizeRole("admin"), (req, res) => {

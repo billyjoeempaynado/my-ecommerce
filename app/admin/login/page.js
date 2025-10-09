@@ -2,7 +2,7 @@
 
 import { useState } from "react"; // React hook to manage local state
 import { useRouter } from "next/navigation"; // Next.js hook for programmatic navigation
-import { useAuth } from "../../frontend/context/AuthContext"; // Custom hook to access Auth context
+import { useAuth } from "../../../frontend/context/AuthContext"; // Custom hook to access Auth context
 import { jwtDecode } from "jwt-decode";
 
 export default function LoginPage() {
@@ -50,7 +50,7 @@ export default function LoginPage() {
       if (decoded.role === 'admin') {
         router.push('/dashboard/admin/overview');
       } else {
-        router.push('/dashboard/user');
+        router.push('/login');
       }
     } catch (err) {
       // Handle unexpected errors (e.g., server down, network issues)

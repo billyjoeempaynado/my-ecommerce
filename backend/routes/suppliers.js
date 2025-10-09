@@ -29,7 +29,7 @@ router.get("/", authenticate, async (req, res) => {
         {
           model: Item,
           as: "items",                 // Alias from Supplier.hasMany(Item)
-          attributes: ["id", "name", "code", "price", "stock"] 
+          attributes: ["id", "name", "code", "price", "stock", "created_at"] 
         }
       ]
     });
@@ -62,6 +62,21 @@ router.delete("/:id", authenticate, authorizeRole("admin"), async (req, res) => 
   } catch (error) {
     console.error("❌ Error deleting supplier:", error);
     return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+
+// ================== UPDATE supplier ==================
+// PUT /api/suppliers/:id
+router.put("/:id", authenticate, authorizeRole("admin"), async (req, res) => {
+  try {
+    const supplierToUpdate = await Supplier.findByPk(req.params.id);
+    if (!supplierToUpdate) return res.status(404).json({ error: "Supplier not found" });
+
+    await supplierToUpdate.update(req.body);
+    res.json(supplierToUpdate);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 });
 

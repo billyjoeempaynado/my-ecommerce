@@ -2,6 +2,7 @@ import Item from "./Item.js";
 import Category from "./Category.js";
 import Supplier from "./Supplier.js";
 
+
 // Category ↔ Item
 Category.hasMany(Item, { foreignKey: "category_id", as: "items" });
 Item.belongsTo(Category, { foreignKey: "category_id", as: "category" });

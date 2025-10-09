@@ -5,7 +5,7 @@ export async function middleware(req) {
   const token = req.cookies.get("token")?.value;
 
   if (!token) {
-    return NextResponse.redirect(new URL("/login", req.url));
+    return NextResponse.redirect(new URL("/admin/login", req.url));
   }
 
   try {
@@ -21,7 +21,7 @@ export async function middleware(req) {
     }
   } catch (err) {
     console.error("❌ JWT verification failed:", err);
-    return NextResponse.redirect(new URL("/login", req.url));
+    return NextResponse.redirect(new URL("/admin/login", req.url));
   }
 
   return NextResponse.next();

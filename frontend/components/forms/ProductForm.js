@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
-import { getCategories, getSuppliers } from "../../utils/api/updateproduct";
+import { getCategories} from "../../utils/api/categories";
+import { getSuppliers} from "../../utils/api/suppliers";
 
 export default function ProductForm({ isOpen = true, initialData = {}, onChange }) {
   const [formData, setFormData] = useState({

@@ -1,22 +1,9 @@
-
 import { getAuthHeaders } from "./helpers";
 
-// this is used in add product and update product
-
-// 🔹 Fetch Categories
-export async function getCategories() {
-  const res = await fetch(`http://localhost:8080/api/categories`, {
-    headers: { ...getAuthHeaders() },
-  });
-
-  if (!res.ok) throw new Error("Failed to fetch categories");
-  return await res.json();
-}
-
-// 🔹 Fetch Suppliers
-export async function getSuppliers() {
+// 🔹 Fetch Users
+export async function getUsers() {
   try {
-    const res = await fetch(`http://localhost:8080/api/suppliers`, {
+    const res = await fetch(`http://localhost:8080/api/users`, {
       headers: { ...getAuthHeaders() },
     });
 
@@ -34,7 +21,7 @@ export async function getSuppliers() {
 
     return await res.json();
   } catch (err) {
-    console.error("❌ getSuppliers failed:", err.message);
+    console.error("❌ getUsers failed:", err.message);
     throw err;
   }
 }

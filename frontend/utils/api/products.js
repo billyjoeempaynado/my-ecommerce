@@ -54,3 +54,29 @@ export async function fetchProducts() {
           throw new Error("Failed to fetch products");
         return await res.json();
 }
+
+
+
+// 🔹 Update a product
+export async function updateProduct(id, payload) {
+  try {
+    const res = await fetch(`http://localhost:8080/api/items/${id}`, {
+      method: "PUT",
+      headers: {
+        ...getAuthHeaders(),
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.error || "Failed to update product");
+    }
+
+    return await res.json(); // return updated product
+  } catch (err) {
+    console.error("❌ updateProduct failed:", err.message);
+    throw err;
+  }
+}
