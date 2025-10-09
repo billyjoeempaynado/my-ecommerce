@@ -1,7 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useNotification } from "../../../../frontend/components/Notification";
-import { getCategories, getSuppliers} from "../../../../frontend/utils/api/updateproduct";
+import { getCategories} from "../../../../frontend/utils/api/categories";
+import { getSuppliers} from "../../../../frontend/utils/api/suppliers";
 import { addProduct} from "../../../../frontend/utils/api/products";
 import ImageUploader from "@/frontend/components/forms/imageUploader";
 

@@ -14,7 +14,7 @@ router.post("/", authenticate, authorizeRole("admin"), async (req, res) => {
 
   try {
     // Create new supplier with the name from request body
-    const supplier = await Supplier.create({ name, email, phone, address });
+    const supplier = await Supplier.create({ name, email, phone, address, person });
     res.json(supplier);  // Respond with created supplier
   } catch (err) {
     res.status(500).json({ error: err.message });

@@ -2,12 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { PencilIcon, TrashIcon, EyeIcon } from "@heroicons/react/24/solid";
-import {
-  deleteResource,
-  createSupplier,
-  getSuppliers,
-  updateSupplier,
-} from "../../../../frontend/utils/api/suppliers";
+import { deleteResource, createSupplier, getSuppliers, updateSupplier} from "../../../../frontend/utils/api/suppliers";
 import GlobalViewModal from "../../../../frontend/components/admin/GlobalViewModal";
 import GlobalEditModal from "../../../../frontend/components/admin/GlobalEditModal";
 import GlobalDeleteModal from "../../../../frontend/components/admin/GlobalDeleteModal";
